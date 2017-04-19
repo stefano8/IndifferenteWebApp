@@ -1,0 +1,8 @@
+1. Class Identification:
+Class ALBERO:
+Il team ha deciso di inserire questa classe nel diagramma poiché ritenuta fondamentale al funzionamento del server, in quanto quest’ultimo lavorerà proprio su essa.
+La classe albero è composta dall’oggetto albero il quale a sua volta è caratterizzato da attributi (dove AttributoNodo, AttributoArco, ValAttributoNodo e ValAttributoArco sono array) quali specificano la struttura dell’albero in considerazione.
+Class Server:
+La classe Server è la parte piu importante del nostro sistema, poiché contiene il codice che ci permetterà di effettuare il calcolo effettivo tra due vertici. La classe è caratterizzata da operazioni che indicano ciò che occore per il corretto funzionamento del sistema.
+Class Servlet:
+La classe Servlet è una componente essenziale del sistema, in quanto grazie alle sue funzioni request() e response() ci permette di scambiare dati con la User Interface. La funzione request ci permette di prendere dati input, mentre response ci permette di restituire il risultato.

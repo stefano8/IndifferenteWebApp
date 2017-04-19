@@ -1,0 +1,183 @@
+
+import com.sun.xml.messaging.saaj.soap.StaxLazySourceBridge;
+import java.sql.*;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+
+public class SERVER {
+
+	private	Connection conn;
+	private Statement st;
+	private ResultSet rs;
+	private PreparedStatement stat;
+	
+	public  SERVER() {
+		
+		try{
+			Class.forName("com.mysql.jdbc.Driver");
+			conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/prova1?verifyServerCertificate=false&useSSL=true","root","tomtom");
+			
+			System.out.println("connessione DB stabilita");
+		}catch (Exception ex){
+			System.out.println("erro");
+		}
+	}//END CSTRUTTORE
+	
+	
+	  public void inserisciInLista(String nomeAlbero,String NomeVertice,int Split,int Altezza) throws SQLException{
+          String query= "INSERT INTO  listaalberi VALUE ( ?,?,?,?)";
+     
+          
+          	PreparedStatement statement=	conn.prepareStatement(query );
+               	statement.setObject(1, nomeAlbero);
+                       statement.setObject(2,NomeVertice);
+                       statement.setInt(3, Split);
+                       statement.setInt(4, Altezza);
+                       statement .executeUpdate();
+                       
+	}
+	  public void cancellaAlberoInListaAlberi(String nomeAlbero) throws SQLException{ 
+		   String query= "DELETE FROM listaalberi where nomealbero=(?)";
+			PreparedStatement statement=	conn.prepareStatement(query );
+			statement.setObject(1, nomeAlbero);
+			statement.executeUpdate();
+	  }
+	  public void cancellaTabellaAlbero(String nomeAlbero) throws SQLException{ 
+		   String query= "DROP TABLE "+ nomeAlbero;
+		    Statement statement=	conn.createStatement( );
+			statement.executeUpdate(query);
+}
+	  
+	  public void CreazioneTabella(String nomeAlbero,String NomeVertice,String listaatrributiNodo[]) throws SQLException{
+		//ricorda di mettere gestione errore in casoo di nome e colonne uguali
+		  
+		  String temp="";
+		  for(int i=0;i<listaatrributiNodo.length;i++){
+			  temp+= listaatrributiNodo[i] +" FLOAT ,";
+		  }
+		  temp=temp.substring(0, temp.length()-1);
+
+		  String query= "CREATE TABLE "+nomeAlbero+" ( VERTICE INT  , percorso int , " + temp + " );";
+		   
+                       Statement statement=conn.createStatement( );           
+                       statement.executeUpdate(query);
+                       
+	}
+	  
+	  public void InserimentoInTabella(Albero albero ){
+		  Statement statement;
+		  String agg="";
+		  String appoggio="";
+		  String query= "INSERT INTO "+ albero.nomealbero  +" VALUES "  ;
+		
+		  for(int i=0;i<albero.tree.length;i++){
+			  agg+="(" +i+","+ albero.tree[i].padre +" ,";
+			  for(int y=0;y<albero.tree[i].valore.length;y++){
+				  agg+=albero.tree[i].valore[y]+ " ," ;
+				  
+			  }
+			agg=  agg.substring(0, agg.length()-1);
+			agg+="),";
+			if(agg.length()>20000){
+                              try {
+                                  agg=  agg.substring(0, agg.length()-1);
+                                  appoggio= query + agg;
+                                  agg="";
+                                  
+                                  statement = conn.createStatement();
+                                  statement.executeUpdate(appoggio);
+                              } catch (SQLException ex) {
+                                  Logger.getLogger(SERVER.class.getName()).log(Level.SEVERE, null, ex);
+                              }
+				
+			}
+		  }
+		  
+		  agg=  agg.substring(0, agg.length()-1);
+		  query= query + agg;
+		
+		  
+		 
+		    try {
+        	  statement = conn.createStatement( );
+			statement.executeUpdate(query);
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}  
+	  
+		 
+		  }// endInserimentoInTabella 
+          
+          public ResultSet selectLista(){
+		  
+		  String query= "SELECT * FROM LISTAALBERI";
+		  ResultSet result=null;
+		  try {
+			  Statement statement= conn.createStatement( );
+			  result = statement.executeQuery(query);
+			
+		  } catch (SQLException e) {System.out.println("errore select ");
+		  }
+		  return result;
+		  }
+          
+          
+   
+	   public double[] calcolo(String val[],String nomeAlbero,int nodo1,int  nodo2) throws SQLException{
+		  
+		  double valori[]= new double[val.length];
+	 String query= "SELECT * from " + nomeAlbero +" where vertice= " +nodo2   ;
+	 String query1= "SELECT * from " + nomeAlbero +" where vertice= " +nodo1   ;
+	 ResultSet result=null;
+	  Statement statement;
+	statement = conn.createStatement( );
+	 result = statement.executeQuery(query1); 
+	// System.out.println(query1);
+		
+
+	while(result.next()){
+		for(int i=0;i<val.length;i++){
+	 		valori[i]+=result.getDouble(i+3);
+	 	}
+	}
+			 statement = conn.createStatement( );
+			 result = statement.executeQuery(query); 
+			 System.out.println(query);
+			 
+			 while(result.next()&& result.getInt(2)!= nodo1){
+				for(int i=0;i<val.length;i++){
+			 		valori[i]+=result.getDouble(i+3);
+			 	}
+		
+				  query="SELECT * from " + nomeAlbero +" where vertice = " +result.getInt(2);
+				  result.close();
+				  statement = conn.createStatement( );
+				  System.out.println(query);
+				  result = statement.executeQuery(query); 
+				
+			 	  } 
+				  if( nodo1==result.getInt(2)){
+					for(int i=0;i<val.length;i++){
+						valori[i]+=result.getDouble(i+3);
+					 	}
+					}
+				query="SELECT * from " + nomeAlbero +" where vertice = " +nodo1;
+				result.close();
+				statement = conn.createStatement( );
+				System.out.println(query);
+				result = statement.executeQuery(query); 
+				return valori;
+	  }// END CALCOLO		
+}//end class
+	
+
+

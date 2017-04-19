@@ -1,0 +1,25 @@
+
+import java.util.Random;
+public class Nodo {
+  int padre;
+  double valore[];
+
+    
+    public Nodo(double[][]valore){
+    	 this.valore= new double[valore.length];
+    	for(int i=0,y=0;i<valore.length;i++){
+    	   Random rand = new Random();
+    	   double temp= valore[i][y+1] - valore[i][y] ;
+    	   double randomNum = rand.nextFloat()* (temp) + valore[i][y];
+           this.valore[i]=randomNum;
+           this.padre=0;
+           }
+     }
+    public int  getPadre(){
+        return this.padre;
+     }
+    
+        
+     public void setPadre(int padre){
+        this.padre= padre;}   
+     }

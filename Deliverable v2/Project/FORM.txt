@@ -1,0 +1,109 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>CREA ALBERO</title>
+
+
+    <script type="text/javascript">
+    function form(){
+
+      document.forms['messageform'].submit();
+    }
+    </script>
+
+<!-- AGGIUNGI ATTRIBUTO NODO -->
+<script>var NumerAttrNodo=0;
+function aggiungiAttributoNodo()  {
+
+  var RowNodo = document.getElementById("RowNodo");
+  RowNodo.appendChild(document.createElement("div"));
+
+  var u =   RowNodo.appendChild(document.createElement("input"));
+  u.setAttribute("type", "text");
+  u.setAttribute("name", "idnomeAttributoNodo"+NumerAttrNodo);
+  RowNodo.appendChild(u).value=document.getElementById("idnomeAttributoNodo").value ;
+
+  var i = RowNodo.appendChild(document.createElement("input"));
+  i.setAttribute("type", "text");
+  i.setAttribute("name", "idvaloreminNodo"+NumerAttrNodo);
+  RowNodo.appendChild(i).value=document.getElementById("idvaloreMinNodo").value ;
+  var o = RowNodo.appendChild(document.createElement("input"));
+  o.setAttribute("type", "text");
+  o.setAttribute("name", "idvaloremaxNodo"+NumerAttrNodo);
+  RowNodo.appendChild(o).value=document.getElementById("idvaloreMaxNodo").value ;
+
+  NumerAttrNodo+=1;
+  document.getElementById("numeroAttrNodo").value=NumerAttrNodo;
+}
+</script>
+
+ <!--AGGIUNGI ATTRIBUTO ARCO -->
+<script>
+var NumerAttrArco=0;
+function aggiungiAttributoArco()  {
+
+  var RowArco = document.getElementById("RowArco");
+  RowArco.appendChild(document.createElement("div"));
+
+  var x =   RowArco.appendChild(document.createElement("input"));
+   x.setAttribute("type", "text");
+      x.setAttribute("name", "idnomeArco"+NumerAttrArco);
+  RowArco.appendChild(x).value=document.getElementById("idnomeAttributoArco").value ;
+
+  var y = RowArco.appendChild(document.createElement("input"));
+y.setAttribute("type", "text");
+y.setAttribute("name", "idvaloreminArco"+NumerAttrArco);
+  RowArco.appendChild(y).value=document.getElementById("idValMinArco").value ;
+    var z = RowArco.appendChild(document.createElement("input"));
+z.setAttribute("type", "text");
+z.setAttribute("name", "idvaloremaxArco"+NumerAttrArco);
+  RowArco.appendChild(z).value=document.getElementById("idValMaxArco").value ;
+NumerAttrArco+=1;
+document.getElementById("numeroAttrArco").value=NumerAttrArco;
+}
+
+</script>
+
+<!-- HEAD-->
+</head>
+ <body>
+   <!-- FORM_CREAZIONE -->
+  <form  action="CREAZIONEALBERO" method="GET">
+      <fieldset>
+          <legend>DATI ALBERO</legend>
+                  <fieldset>
+                    <legend>nomi:</legend>
+                            <input type="text" name="Nome_Albero" > Nome Albero </br>
+                            <input type="text" name="Nome_Vertice" >Nome Vertice </br>
+                  </fieldset>
+                  <fieldset>
+                   <legend>specifiche:</legend>
+                            <input type="text" name="Split_Size" >Split Size </br>
+                            <input type="text" name="Depth">Depth </br>
+                  </fieldset>
+                    <button type="submit" name="button" > GENERA</button>
+                  <fieldset>
+                    <legend>attributi nodi:</legend>
+                            <input id="idnomeAttributoNodo" type="text" name="idnomeAttributoNodo">Nome Attributo nodo
+                            <input id="numeroAttrNodo" type="hidden" name="numeroAttrNodo">
+                            <input id="idvaloreMinNodo" type="text" name="valoreMinAttributiNodo">valoreMinNodo
+                            <input id="idvaloreMaxNodo" type="text" name="valoreMaxAttributiNodo" >  valoreMaxNodo
+                            <button type="button" name="buttonNodi" onclick="aggiungiAttributoNodo(); return false;"> aggiungiAttrNodo</button>
+                  </fieldset>
+                  <fieldset>
+              <!--      <legend>attributi archi:</legend>
+                            <input id="idnomeAttributoArco" type="text" name="idnomeAttributoArco" >Nome attributo Arco
+                            <input id="numeroAttrArco" type="hidden" name="numeroAttrArco" >
+                            <input id="idValMinArco" type="text" name="idValMinArco" >valoreMinArco
+                            <input id="idValMaxArco" type="text" name="idValMaxArco" >valoreMaxArco
+                            <button type="button" name="buttonArchi" > aggiungiAttrArco</button>
+                 --> </fieldset>
+                <div id="RowNodo" ></div>
+                <div id="RowArco"></div>
+
+   </fieldset>
+  </form>
+ </body>
+</html>

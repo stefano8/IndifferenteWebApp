@@ -1,0 +1,66 @@
+
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class CALCOLO extends HttpServlet {
+
+   int nodo1;
+   int nodox;
+   protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+     
+  
+      String u=request.getParameter("Nodo");
+           this.nodo1=Integer.parseInt(u );
+           String i=request.getParameter("Nodoo");
+           this.nodox= Integer.parseInt(i);
+           
+           System.out.println(nodox+" "+ nodo1);
+           PrintWriter out= response.getWriter();
+           out.println(nodo1+" " +nodox);
+           String[] attr= {"attr2","attr1"};
+           
+           try {
+           SERVER database= new SERVER();
+           System.out.println("sono qua"); 
+           double []val=new double[attr.length];
+           
+         
+           val=  database.calcolo(attr,"", nodo1  ,nodox);
+           
+           for(int x=0;x<val.length;x++){
+           out.println(val[x]);
+           }
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet RISULTATO</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet RISULTATO FUNZIONA</h1>");
+            out.println("</body>");
+            out.println("</html>");
+           
+           } catch (SQLException ex) {
+           Logger.getLogger(CALCOLO.class.getName()).log(Level.SEVERE, null, ex);
+           }
+           
+   
+   }
+  protected void service(HttpServletRequest request, HttpServletResponse response) throws IOException{
+    
+   
+        
+          
+      
+  }
+}

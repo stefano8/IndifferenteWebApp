@@ -1,0 +1,68 @@
+
+public class Albero {
+    String nomealbero;
+    String nomeVertice;
+    int numeroNodi;
+    int altezza ;
+    int splitSize ;
+    String AttributoNodo[];
+    String AttributoArco[];
+    
+    double valAttributoNodo[][];
+    int numAttributiNodi;
+    int numAttributiArchi;
+    Nodo [] tree;
+
+    int i=0;
+    int u=0;
+    int a=1;
+    
+    public void riempiArray(){
+    this.tree= new Nodo[this.numeroNodi];
+            
+    for( i=0;i<this.numeroNodi;i++){
+    	tree[i] = new Nodo(this.valAttributoNodo);
+    	} tree[0].setPadre(0);
+    	for(u=0;u<this.tree.length/splitSize;u++){
+    		for( a=1;a<=this.splitSize;a++){
+    			tree[(u*splitSize)+a].setPadre(u);
+    		}
+    	}
+    }
+    
+    
+    public Albero(String nomealbero,String nomeVertice,int altezza ,int splitSize,double valAttributoNodoMin[],double valAttributoNodoMax[],String AttributoNodo[] ){
+                this.nomealbero= nomealbero;
+                this.nomeVertice=nomeVertice;
+                this.splitSize=splitSize;
+                this.altezza=altezza;
+                this.AttributoNodo=new String [AttributoNodo.length];
+                this.numAttributiNodi= valAttributoNodoMin.length;
+              this.valAttributoNodo= new double [valAttributoNodoMin.length][2];
+    for(int l=0;l<this.numAttributiNodi;l++){
+    this.valAttributoNodo[l][0]= valAttributoNodoMin[l];
+     this.valAttributoNodo[l][1]= valAttributoNodoMax[l];
+    // System.out.println(valAttributoNodo[i][0]+"   "+valAttributoNodo[i][1]);
+    }
+               
+           //     this.numAttributiArchi=valAttributoArco.length;
+                this.numeroNodi=calcoloNodi();
+                this.riempiArray();
+      }
+                public int calcoloNodi(){
+    	 if(this.altezza == 1)return 1;
+    	 else{
+    	 int temp=1;
+    	  	for(int t=2;t<= this.altezza ;t++){
+            temp= (temp * this.splitSize)+1;
+    	  	}
+          return temp;
+          } }          
+                
+   
+                    
+   
+     public int numeroNodi(){
+        return this.numeroNodi;
+    }
+    }//end class

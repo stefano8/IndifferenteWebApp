@@ -1,0 +1,108 @@
+
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+public class CREAZIONEALBERO extends HttpServlet {
+
+   
+    
+   int nodo1;
+   int nodox;
+    String nomeAlbero;
+String nomeVertice;
+int altezza ;
+int splitSize;
+Albero albero;
+int percorso;
+
+int nod11;
+int nodo22;
+
+    PrintWriter out;
+
+
+
+int numAttributiNodi;
+String[] nomeAttributiNodi;
+double[]numeroMinAttributoNodo;
+double[]numeroMaxAttributoNodo;
+
+
+
+
+   
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+      
+        
+       try {
+            this.nomeAlbero= request.getParameter("Nome_Albero");
+            this.nomeVertice=request.getParameter("Nome_Vertice");
+            String aaltezza=request.getParameter("Depth");
+            String ssplitSize=request.getParameter("Split_Size");
+            this.splitSize= Integer.parseInt(ssplitSize);
+            this.altezza= Integer.parseInt(aaltezza);
+            int i;
+             String temp=request.getParameter("numeroAttrNodo");
+              this.numAttributiNodi= Integer.parseInt(temp);
+              
+             
+               this.numeroMinAttributoNodo= new double[numAttributiNodi];
+               this.numeroMaxAttributoNodo= new double[numAttributiNodi];
+               this.nomeAttributiNodi= new String[numAttributiNodi];
+             
+    for(int contatoreNodi1=0;contatoreNodi1 < this.numAttributiNodi ;contatoreNodi1++){
+
+             this.nomeAttributiNodi[contatoreNodi1]= request.getParameter("idnomeAttributoNodo"+contatoreNodi1) ;
+             this.numeroMinAttributoNodo[contatoreNodi1]= Integer.parseInt(request.getParameter("idvaloreminNodo"+ contatoreNodi1));
+             this.numeroMaxAttributoNodo[contatoreNodi1]= Integer.parseInt(request.getParameter("idvaloremaxNodo"+ contatoreNodi1) );
+             System.out.println(this.nomeAttributiNodi[contatoreNodi1] + " " + this.numeroMinAttributoNodo[contatoreNodi1] + " " +this.numeroMaxAttributoNodo[contatoreNodi1]);
+             }
+             
+           
+             
+//fine recupero attributi
+          this.albero = new Albero(this.nomeAlbero,this.nomeVertice,this.altezza,this.splitSize,this.numeroMinAttributoNodo,this.numeroMaxAttributoNodo,this.nomeAttributiNodi);
+            
+            
+            SERVER database= new SERVER();
+            database.inserisciInLista(this.albero.nomealbero, this.albero.nomeVertice, this.albero.splitSize, this.albero.altezza);
+            database.CreazioneTabella(this.albero.nomealbero,this.albero.nomeVertice,this.nomeAttributiNodi);
+            database.InserimentoInTabella(this.albero);
+            
+         //   response.sendRedirect("calcolo.html");
+      
+          RequestDispatcher dispatcher = request.getRequestDispatcher("calcolo.html");
+	            dispatcher.include( request, response ) ;
+       
+      
+              
+       
+       } catch (SQLException ex) {
+           Logger.getLogger(CREAZIONEALBERO.class.getName()).log(Level.SEVERE, null, ex);
+       }
+             
+    
+        }
+
+   
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        doGet(request, response);
+       
+    }
+
+   
+   
+
+}
