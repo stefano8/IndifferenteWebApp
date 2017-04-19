@@ -1,0 +1,9 @@
+1. Si ha intenzione di cancellare un albero gia presente
+2. (If) UI comunica al Server l'intenzione di cancellare un albero
+3. Il server effettua un controllo: verifica se l'albero è gia utilizzato da altri utenti o meno
+4.  Il server si connette e quindi comunica con il database.....
+5. .....che si preoccupa di eseguire una query relativa all'operazione di cancellazione
+6. Database notifica al Server di aver cancellato l'albero
+7,8. UI notifica l'utente la cancellazione dell'albero riuscita
+9. (else) 
+10. L'albero è già utilizzato da un altro/i utente/i, viene segnalato l'errore e quindi l'utente dovrà ripetere la procedura di cancellazione
